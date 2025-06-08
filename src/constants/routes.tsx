@@ -1,3 +1,4 @@
+import DashboardPage from "@/pages/DashboardPage";
 import RootPage from "@/pages/RootPage";
 import SettingsPage from "@/pages/SettingsPage";
 import DisplaySettingsPage from "@/pages/_settings/DisplaySettingsPage";
@@ -21,7 +22,7 @@ export const PRIVATE_ROUTES: Interface__PrivateRoute[] = [
     path: "/dashboard",
     activePath: "/dashboard",
     titleKey: "navs.dashboard",
-    element: <></>,
+    element: <DashboardPage />,
   },
 
   // Settings

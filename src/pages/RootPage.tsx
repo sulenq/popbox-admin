@@ -15,6 +15,8 @@ const RootPage = () => {
         bg={"body"}
         pos={"relative"}
         border={"1px solid {colors.border.subtle}"}
+        maxW={"800px"}
+        m={"auto"}
       >
         <ColorModeButton pos={"absolute"} right={4} top={4} />
 
