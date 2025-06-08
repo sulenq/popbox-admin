@@ -19,7 +19,7 @@ const LoginForm = () => {
   const { l } = useLang();
   const setAuthToken = useAuthMiddleware((s) => s.setAuthToken);
   const { themeConfig } = useThemeConfig();
-  const { req, loading } = useRequest({
+  const { req, loading, response } = useRequest({
     id: "login",
     loadingMessage: {
       ...l.login_loading_toast,
@@ -35,6 +35,8 @@ const LoginForm = () => {
       },
     },
   });
+
+  console.log(response);
 
   // Utils
   const navigate = useNavigate();
@@ -72,6 +74,7 @@ const LoginForm = () => {
           },
         },
       });
+      navigate("/dashboard");
     },
   });
 
