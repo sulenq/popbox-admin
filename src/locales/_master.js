@@ -800,3 +800,21 @@ export const see_all = {
   id: "Lihat semua",
   en: "See all",
 };
+
+// Semantic
+export const transaction = {
+  id: "Transaksi",
+  en: "Transaction",
+};
+export const dialy = {
+  id: "Harian",
+  en: "Daily",
+};
+export const weekly = {
+  id: "Mingguan",
+  en: "Weekly",
+};
+export const monthly = {
+  id: "Bulanan",
+  en: "Monthly",
+};

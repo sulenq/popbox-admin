@@ -1,4 +1,5 @@
 import { NAVS } from "@/constants/navs";
+import useADM from "@/context/useADM";
 import useLang from "@/context/useLang";
 import { useThemeConfig } from "@/context/useThemeConfig";
 import useIsSmScreenWidth from "@/hooks/useIsSmScreenWidth";
@@ -22,11 +23,9 @@ import Heading6 from "../ui-custom/Heading6";
 import HelperText from "../ui-custom/HelperText";
 import Logo from "../ui-custom/Logo";
 import NavLink from "../ui-custom/NavLink";
+import { ColorModeButton } from "../ui/color-mode";
 import { Tooltip } from "../ui/tooltip";
 import CurrentUserTimeZone from "./CurrentUserTimeZone";
-import MerchantInbox from "./Inbox";
-import { ColorModeButton } from "../ui/color-mode";
-import useADM from "@/context/useADM";
 
 const ActiveNavIndicator = ({ ...props }: CircleProps) => {
   // Contexts
@@ -253,7 +252,7 @@ const NavContainer = (props: any) => {
         overflowY={"scroll"}
         className="scrollY"
         overflowX={"clip"}
-        bg={"bgContent"}
+        bg={"#f8f8f8"}
       >
         <HStack
           justify={"space-between"}
@@ -279,7 +278,7 @@ const NavContainer = (props: any) => {
 
             <CurrentUserTimeZone />
 
-            <MerchantInbox />
+            {/* <MerchantInbox /> */}
           </HStack>
         </HStack>
 

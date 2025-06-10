@@ -6,7 +6,13 @@ import { Image, SimpleGrid } from "@chakra-ui/react";
 
 const RootPage = () => {
   return (
-    <CContainer p={8} justify={"center"} minH={"100dvh"} bg={"bg.subtle"}>
+    <CContainer
+      p={8}
+      justify={"center"}
+      minH={"100dvh"}
+      bg={"bg.subtle"}
+      align={"center"}
+    >
       <SimpleGrid
         columns={[1, null, 2]}
         gap={8}
@@ -16,15 +22,16 @@ const RootPage = () => {
         pos={"relative"}
         border={"1px solid {colors.border.subtle}"}
         maxW={"800px"}
-        m={"auto"}
       >
         <ColorModeButton pos={"absolute"} right={4} top={4} />
 
         <CContainer>
-          <Image src={`${IMAGES_PATH}/login.png`} />
+          <Image src={`${IMAGES_PATH}/login.png`} w={"full"} />
         </CContainer>
 
-        <LoginForm />
+        <CContainer justify={"center"}>
+          <LoginForm />
+        </CContainer>
       </SimpleGrid>
     </CContainer>
   );

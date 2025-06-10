@@ -69,7 +69,7 @@ const useDataState = <T>({
       config,
       onResolve: {
         onSuccess: (r) => {
-          setData(r?.data?.data);
+          setData(r?.data?.result);
           setPagination(r?.data?.pagination);
           setInitialLoading(false);
         },
@@ -117,6 +117,7 @@ const useDataState = <T>({
   ]);
 
   return {
+    makeRequest,
     data,
     setData,
     initialLoading,

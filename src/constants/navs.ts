@@ -1,14 +1,14 @@
 import {
-  IconApps,
+  IconCategory,
   IconDeviceDesktop,
   IconExclamationCircle,
   IconGavel,
-  IconHelpCircle,
   IconHome,
   IconLanguage,
-  IconReceipt2,
+  IconReceipt,
   IconShieldHalf,
   IconShieldLock,
+  IconTemplate,
 } from "@tabler/icons-react";
 
 export const NAVS = [
@@ -20,17 +20,17 @@ export const NAVS = [
   {
     labelKey: "navs.product",
     path: "/product",
-    icon: IconReceipt2,
+    icon: IconCategory,
   },
   {
     labelKey: "navs.template",
     path: "/template",
-    icon: IconApps,
+    icon: IconTemplate,
   },
   {
     labelKey: "navs.transaction",
     path: "/transaction",
-    icon: IconHelpCircle,
+    icon: IconReceipt,
   },
 ];
 

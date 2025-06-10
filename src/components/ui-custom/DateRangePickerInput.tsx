@@ -289,7 +289,7 @@ const DateRangePickerInput = ({
 
   // Handle confirm selected
   function onConfirmSelected() {
-    if (!nonNullable || selected.length > 0) {
+    if (!nonNullable || (selected?.from && selected?.to)) {
       onConfirm?.({
         from: new Date(
           new Date(selected?.from as any).getTime() +

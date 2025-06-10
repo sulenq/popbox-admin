@@ -19,7 +19,7 @@ const LoginForm = () => {
   const { l } = useLang();
   const setAuthToken = useAuthMiddleware((s) => s.setAuthToken);
   const { themeConfig } = useThemeConfig();
-  const { req, loading, response } = useRequest({
+  const { req, loading } = useRequest({
     id: "login",
     loadingMessage: {
       ...l.login_loading_toast,
@@ -36,8 +36,6 @@ const LoginForm = () => {
     },
   });
 
-  console.log(response);
-
   // Utils
   const navigate = useNavigate();
 
@@ -53,39 +51,60 @@ const LoginForm = () => {
       password: yup.string().required(l.required_form),
     }),
     onSubmit: (values) => {
+      const token = btoa(`photobox:PhotoBox123@`);
       const payload = {
         username: values.identifier,
         password: values.password,
       };
       const config = {
         method: "post",
-        url: `/users/login`,
+        url: "/users/login",
+        headers: {
+          Authorization: `Basic ${token}`,
+          "Content-Type": "application/json",
+        },
         data: payload,
       };
+
       req({
         config,
         onResolve: {
           onSuccess: (r: any) => {
-            console.log(r);
-            localStorage.setItem("__auth_token", r.data.token);
-            localStorage.setItem("__user_data", r.data.data?.user);
+            localStorage.setItem("__auth_token", r.data.result);
+            // localStorage.setItem("__user_data", r.data.data?.user);
             setAuthToken(r.data.token);
             navigate("/dashboard");
           },
         },
       });
-      navigate("/dashboard");
+
+      // const config = {
+      //   method: "post",
+      //   url: `/users/login`,
+      //   data: payload,
+      // };
+      // req({
+      //   config,
+      //   onResolve: {
+      //     onSuccess: (r: any) => {
+      //       console.log(r);
+      //       localStorage.setItem("__auth_token", r.data.token);
+      //       localStorage.setItem("__user_data", r.data.data?.user);
+      //       setAuthToken(r.data.token);
+      //       navigate("/dashboard");
+      //     },
+      //   },
+      // });
     },
   });
 
   return (
     <CContainer
       bg={"body"}
-      m={"auto"}
-      w={"full"}
       maxW={"380px"}
       p={4}
       borderRadius={8}
+      justify={"center"}
     >
       <FieldsetRoot disabled={loading}>
         <CContainer mb={4} gap={1}>
