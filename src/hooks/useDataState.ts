@@ -16,7 +16,7 @@ interface Props<T> {
   // withPagination?: boolean;
 }
 
-const useDataState = <T>({
+const useDataState = <T = any>({
   initialData,
   payload,
   url,

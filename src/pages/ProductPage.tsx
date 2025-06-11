@@ -77,6 +77,7 @@ const DefaultTemplateInput = (props: any) => {
                     onClick={() => {
                       onChangeSetter(item);
                     }}
+                    opacity={inputValue ? (active ? 1 : 0.5) : 1}
                   >
                     {active && (
                       <Circle
@@ -186,7 +187,7 @@ const AddProduct = () => {
             <FieldsetRoot disabled={loading}>
               <form id={"add-product-form"} onSubmit={formik.handleSubmit}>
                 <Field
-                  label="Product Code"
+                  label="Product Photo"
                   invalid={!!formik.errors.productPhoto}
                   errorText={formik.errors.productPhoto as string}
                   mb={4}
@@ -613,7 +614,7 @@ const ProductPage = () => {
   const [offset, setOffset] = useState<any>(0);
 
   // Utils
-  function getProduct() {
+  function fetch() {
     const payload = {
       limit: 10,
       offset: 0,
@@ -635,18 +636,18 @@ const ProductPage = () => {
   }
 
   useEffect(() => {
-    getProduct();
+    fetch();
   }, [rt, limit, offset]);
 
   return (
     <CContainer p={4} pt={0} align={"center"} flex={1}>
       {loading && <ComponentSpinner />}
 
-      {!loading && data && (
+      {!loading && (
         <>
-          {error && <FeedbackRetry onRetry={getProduct} />}
+          {error && <FeedbackRetry onRetry={fetch} />}
 
-          {!error && (
+          {!error && data && (
             <CContainer borderRadius={16} bg={"body"} pb={4}>
               <HStack p={4} borderBottom={"1px solid {colors.border.subtle}"}>
                 <Heading6 fontWeight={"bold"}>Setting Product</Heading6>

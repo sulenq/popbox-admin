@@ -9,6 +9,7 @@ import ReportProblemPage from "@/pages/_settings/ReportProblemPage";
 import TermsOfServicePage from "@/pages/_settings/TermsOfServicePage";
 import { Interface__PrivateRoute, Interface__Route } from "./interfaces";
 import ProductPage from "@/pages/ProductPage";
+import TemplatePage from "@/pages/TemplatePage";
 
 export const ROUTES: Interface__Route[] = [
   {
@@ -35,7 +36,7 @@ export const PRIVATE_ROUTES: Interface__PrivateRoute[] = [
     path: "/template",
     activePath: "/template",
     titleKey: "navs.template",
-    element: <DashboardPage />,
+    element: <TemplatePage />,
   },
   {
     path: "/transaction",
