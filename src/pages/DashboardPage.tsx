@@ -123,7 +123,8 @@ const UpdateRule = (props: any) => {
         config,
         onResolve: {
           onSuccess: () => {
-            setRt(rt);
+            setRt(!rt);
+            back();
           },
         },
       });
