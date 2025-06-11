@@ -27,6 +27,7 @@ import back from "@/utils/back";
 import fileToBase64 from "@/utils/fileToBase64";
 import formatDate from "@/utils/formatDate";
 import formatNumber from "@/utils/formatNumber";
+import urlToBase64 from "@/utils/urlToBase64";
 import {
   Circle,
   FieldsetRoot,
@@ -123,14 +124,14 @@ const AddProduct = () => {
       productCode: "",
       productName: "",
       productPhoto: undefined as any,
-      price: undefined as any,
+      productPrice: undefined as any,
       defaultTemplate: undefined as any,
     },
     validationSchema: yup.object().shape({
       productCode: yup.string().required(l.required_form),
       productName: yup.string().required(l.required_form),
       productPhoto: yup.array().required(l.required_form),
-      price: yup.number().required(l.required_form),
+      productPrice: yup.number().required(l.required_form),
       defaultTemplate: yup.object().required(l.required_form),
     }),
     onSubmit: async (values) => {
@@ -141,7 +142,7 @@ const AddProduct = () => {
         productCode: values.productCode,
         productName: values.productName,
         productPhoto: productPhoto ? await fileToBase64(productPhoto) : null,
-        price: values.price,
+        productPrice: values.productPrice,
         defaultTemplateId: values.defaultTemplate?.id,
       };
 
@@ -237,16 +238,16 @@ const AddProduct = () => {
 
                 <Field
                   label="Price"
-                  invalid={!!formik.errors.price}
-                  errorText={formik.errors.price as string}
+                  invalid={!!formik.errors.productPrice}
+                  errorText={formik.errors.productPrice as string}
                   mb={4}
                 >
                   <NumberInput
-                    name="price"
+                    name="productPrice"
                     onChangeSetter={(input) => {
-                      formik.setFieldValue("price", input);
+                      formik.setFieldValue("productPrice", input);
                     }}
-                    inputValue={formik.values.price}
+                    inputValue={formik.values.productPrice}
                     placeholder="30.000"
                   />
                 </Field>
@@ -316,21 +317,23 @@ const EditProduct = () => {
   const { rt, setRt } = useRenderTrigger();
 
   // States
-  const item = useMemo(() => editProductData, [editProductData]);
+  const item = useMemo(() => editProductData?.item, [editProductData]);
   const formik = useFormik({
     validateOnChange: false,
     initialValues: {
-      productCode: item.productCode,
-      productName: item.productName,
-      productPhoto: item.productPhoto as any,
-      price: item.price,
-      defaultTemplate: undefined as any,
+      productCode: item?.productCode,
+      productName: item?.productName,
+      productPhoto: [item?.productPhoto] as any,
+      productPrice: item?.productPrice,
+      defaultTemplate: {
+        id: item?.defaultTemplateId,
+      },
     },
     validationSchema: yup.object().shape({
       productCode: yup.string().required(l.required_form),
       productName: yup.string().required(l.required_form),
       productPhoto: yup.array().required(l.required_form),
-      price: yup.number().required(l.required_form),
+      productPrice: yup.number().required(l.required_form),
       defaultTemplate: yup.object().required(l.required_form),
     }),
     onSubmit: async (values) => {
@@ -338,14 +341,19 @@ const EditProduct = () => {
       const productPhoto = values.productPhoto?.[0];
 
       const payload = {
+        id: item?.id,
         productCode: values.productCode,
         productName: values.productName,
-        productPhoto: productPhoto ? await fileToBase64(productPhoto) : null,
-        price: values.price,
+        productPhoto:
+          productPhoto instanceof File
+            ? await fileToBase64(productPhoto)
+            : await urlToBase64(productPhoto),
+        productPrice: values.productPrice,
+        defaultTemplateId: values.defaultTemplate?.id,
       };
 
       const config = {
-        url: "/products/add",
+        url: "/products/update",
         method: "post",
         data: payload,
       };
@@ -370,9 +378,9 @@ const EditProduct = () => {
 
         <DisclosureBody>
           <FieldsetRoot disabled={loading}>
-            <form id={"edit-product-form"} onSubmit={formik.handleSubmit}>
+            <form id={"update-product-form"} onSubmit={formik.handleSubmit}>
               <Field
-                label="Product Code"
+                label="Product Photo"
                 invalid={!!formik.errors.productPhoto}
                 errorText={formik.errors.productPhoto as string}
                 mb={4}
@@ -422,16 +430,16 @@ const EditProduct = () => {
 
               <Field
                 label="Price"
-                invalid={!!formik.errors.price}
-                errorText={formik.errors.price as string}
+                invalid={!!formik.errors.productPrice}
+                errorText={formik.errors.productPrice as string}
                 mb={4}
               >
                 <NumberInput
-                  name="price"
+                  name="productPrice"
                   onChangeSetter={(input) => {
-                    formik.setFieldValue("price", input);
+                    formik.setFieldValue("productPrice", input);
                   }}
-                  inputValue={formik.values.price}
+                  inputValue={formik.values.productPrice}
                   placeholder="30.000"
                 />
               </Field>
@@ -468,7 +476,7 @@ const EditProduct = () => {
           <BButton
             colorPalette={"p"}
             type="submit"
-            form="add-product-form"
+            form="update-product-form"
             loading={loading}
           >
             Save
@@ -501,6 +509,12 @@ const DataTable = (props: any) => {
       sortable: true,
     },
     {
+      th: "Product Photo",
+      wrapperProps: {
+        justify: "center",
+      },
+    },
+    {
       th: "Product Code",
       sortable: true,
     },
@@ -521,19 +535,41 @@ const DataTable = (props: any) => {
     item: item,
     columnsFormat: [
       {
+        value: item.productName,
         td: item.productName,
       },
       {
+        td: (
+          <CContainer w={"fit"}>
+            <Image
+              src={item?.productPhoto}
+              h={"50px"}
+              w={"fit"}
+              mx={"auto"}
+              cursor={"pointer"}
+              onClick={() => window.open(item?.productPhoto, "_blank")}
+            />
+          </CContainer>
+        ),
+        wrapperProps: {
+          justify: "center",
+        },
+      },
+      {
+        value: item.productCode,
         td: item.productCode,
       },
       {
+        value: item.productPrice,
         td: `Rp ${formatNumber(item.productPrice)}`,
         cProps: {
           justify: "end",
         },
       },
       {
+        value: item.createdAt,
         td: formatDate(item.createdAt),
+        dataType: "date",
       },
     ],
   }));
