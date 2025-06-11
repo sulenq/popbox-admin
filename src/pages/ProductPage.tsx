@@ -156,6 +156,7 @@ const AddProduct = () => {
         config,
         onResolve: {
           onSuccess: () => {
+            back();
             setRt(!rt);
           },
         },
@@ -362,6 +363,7 @@ const EditProduct = () => {
         config,
         onResolve: {
           onSuccess: () => {
+            back();
             setRt(!rt);
           },
         },

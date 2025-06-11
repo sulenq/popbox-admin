@@ -159,6 +159,7 @@ const AddTemplate = () => {
         config,
         onResolve: {
           onSuccess: () => {
+            back();
             setRt(!rt);
           },
         },
