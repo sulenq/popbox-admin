@@ -158,7 +158,7 @@ const UpdateRule = (props: any) => {
                       formik.setFieldValue("value", input);
                     }}
                     inputValue={formik.values.value}
-                    withSeconds
+                    // withSeconds
                   />
                 </Field>
               </form>
@@ -204,7 +204,7 @@ const Rules = () => {
   });
 
   const rules = data?.ruleList;
-  const sortedRules = rules.sort((a: any, b: any) =>
+  const sortedRules = rules?.sort((a: any, b: any) =>
     a.rulesType.localeCompare(b.rulesType)
   );
 
