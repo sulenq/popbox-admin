@@ -10,6 +10,7 @@ import TermsOfServicePage from "@/pages/_settings/TermsOfServicePage";
 import { Interface__PrivateRoute, Interface__Route } from "./interfaces";
 import ProductPage from "@/pages/ProductPage";
 import TemplatePage from "@/pages/TemplatePage";
+import TransactionPage from "@/pages/TransactionPage";
 
 export const ROUTES: Interface__Route[] = [
   {
@@ -42,7 +43,7 @@ export const PRIVATE_ROUTES: Interface__PrivateRoute[] = [
     path: "/transaction",
     activePath: "/transaction",
     titleKey: "navs.transaction",
-    element: <DashboardPage />,
+    element: <TransactionPage />,
   },
 
   // Settings
