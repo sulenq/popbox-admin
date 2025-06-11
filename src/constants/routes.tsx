@@ -8,6 +8,7 @@ import RegionalSettingsPage from "@/pages/_settings/RegionalSettingsPage";
 import ReportProblemPage from "@/pages/_settings/ReportProblemPage";
 import TermsOfServicePage from "@/pages/_settings/TermsOfServicePage";
 import { Interface__PrivateRoute, Interface__Route } from "./interfaces";
+import ProductPage from "@/pages/ProductPage";
 
 export const ROUTES: Interface__Route[] = [
   {
@@ -22,6 +23,24 @@ export const PRIVATE_ROUTES: Interface__PrivateRoute[] = [
     path: "/dashboard",
     activePath: "/dashboard",
     titleKey: "navs.dashboard",
+    element: <DashboardPage />,
+  },
+  {
+    path: "/product",
+    activePath: "/product",
+    titleKey: "navs.product",
+    element: <ProductPage />,
+  },
+  {
+    path: "/template",
+    activePath: "/template",
+    titleKey: "navs.template",
+    element: <DashboardPage />,
+  },
+  {
+    path: "/transaction",
+    activePath: "/transaction",
+    titleKey: "navs.transaction",
     element: <DashboardPage />,
   },
 

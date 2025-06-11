@@ -1,4 +1,4 @@
-import { Icon } from "@chakra-ui/react";
+import { Icon, useFieldContext } from "@chakra-ui/react";
 import { IconUpload } from "@tabler/icons-react";
 import {
   FileUploadDropzone,
@@ -19,7 +19,7 @@ interface Props extends FileUploadRootProps {
   placeholder?: string;
   initialFilepath?: string;
   label?: string;
-  dropzine?: boolean;
+  dropzone?: boolean;
   description?: string;
   maxFiles?: number;
 }
@@ -34,7 +34,7 @@ const FileInput = (props: Props) => {
     placeholder,
     initialFilepath,
     label,
-    dropzine,
+    dropzone,
     description = `size up to 10 MB, max ${props.maxFiles} file(s)`,
     maxFiles = 1,
     ...restProps
@@ -42,6 +42,7 @@ const FileInput = (props: Props) => {
 
   // Contexts
   const { l } = useLang();
+  const fc = useFieldContext();
 
   // Utils
   const handleFileChange = (details: any) => {
@@ -62,9 +63,11 @@ const FileInput = (props: Props) => {
       {...restProps}
     >
       <>
-        {dropzine ? (
+        {dropzone ? (
           <FileUploadDropzone
-            borderColor={invalid ? "fg.error" : ""}
+            borderColor={
+              fc?.invalid || invalid ? "border.error" : "border.muted"
+            }
             description={description}
             label={l.file_dropzone_label}
           />

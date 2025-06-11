@@ -23,6 +23,7 @@ interface Props {
   children?: any;
   triggerProps?: StackProps;
   disabled?: boolean;
+  loading?: boolean;
 }
 
 const ConfirmationDisclosure = ({
@@ -35,6 +36,7 @@ const ConfirmationDisclosure = ({
   children,
   triggerProps,
   disabled = false,
+  loading,
 }: Props) => {
   // Contexts
   const { themeConfig } = useThemeConfig();
@@ -64,9 +66,10 @@ const ConfirmationDisclosure = ({
           </DisclosureBody>
 
           <DisclosureFooter>
-            <BackButton />
+            <BackButton disabled={loading} />
             <BButton
               onClick={confirmCallback}
+              loading={loading}
               colorPalette={themeConfig.colorPalette}
               {...confirmButtonProps}
             >

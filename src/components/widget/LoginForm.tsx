@@ -77,24 +77,6 @@ const LoginForm = () => {
           },
         },
       });
-
-      // const config = {
-      //   method: "post",
-      //   url: `/users/login`,
-      //   data: payload,
-      // };
-      // req({
-      //   config,
-      //   onResolve: {
-      //     onSuccess: (r: any) => {
-      //       console.log(r);
-      //       localStorage.setItem("__auth_token", r.data.token);
-      //       localStorage.setItem("__user_data", r.data.data?.user);
-      //       setAuthToken(r.data.token);
-      //       navigate("/dashboard");
-      //     },
-      //   },
-      // });
     },
   });
 

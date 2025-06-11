@@ -209,6 +209,7 @@ const RowOptions = ({
                       ? option.disabled
                       : !!option?.disabled?.(rowData)
                   }
+                  loading={option.loading}
                 >
                   <MenuItem
                     key={i}
@@ -283,7 +284,6 @@ const LimitControl = ({
   const { l } = useLang();
 
   // States, Refs
-  const [limit, setLimit] = useState(initialLimit);
   const limits = limitOptions || [
     initialLimit,
     initialLimit * 5,
@@ -292,7 +292,7 @@ const LimitControl = ({
 
   return (
     <CContainer align={"start"} {...props}>
-      {limitControl && setLimitControl && (
+      {limitControl && setLimitControl ? (
         <MenuRoot>
           <MenuTrigger asChild>
             <BButton
@@ -304,7 +304,9 @@ const LimitControl = ({
             >
               <HStack gap={1}>
                 {l.show}
-                <Text fontWeight={"bold"}>{limit === 0 ? l.all : limit}</Text>
+                <Text fontWeight={"bold"}>
+                  {limitControl === 0 ? l.all : limitControl}
+                </Text>
               </HStack>
 
               <Icon maxW={"13px"} ml={1}>
@@ -318,25 +320,18 @@ const LimitControl = ({
               <MenuItem
                 key={i}
                 value={`${item}`}
-                fontWeight={item === limit ? "bold" : ""}
+                fontWeight={item === limitControl ? "bold" : ""}
                 onClick={() => {
-                  setLimit(item);
+                  setLimitControl(item);
                 }}
               >
                 {item}
               </MenuItem>
             ))}
-            <MenuItem
-              value={`0`}
-              fontWeight={0 === limit ? "bold" : ""}
-              onClick={() => {
-                setLimit(0);
-              }}
-            >
-              {l.all}
-            </MenuItem>
           </MenuContent>
         </MenuRoot>
+      ) : (
+        ""
       )}
     </CContainer>
   );
@@ -390,7 +385,7 @@ const PageControl = ({
 
   return (
     <CContainer ml={["", null, "auto"]} {...props}>
-      {pageControl && setPageControl && pagination && (
+      {pageControl && setPageControl && pagination ? (
         <HStack w={"full"} gap={1} justify={"end"}>
           <BButton
             unclicky
@@ -489,6 +484,8 @@ const PageControl = ({
             </Icon>
           </BButton>
         </HStack>
+      ) : (
+        ""
       )}
     </CContainer>
   );

@@ -83,7 +83,7 @@ const RevenueChart = () => {
   return (
     <CContainer gap={4}>
       <HStack justify={"space-between"} wrap={"wrap"}>
-        <HStack p={2} bg={"white"} w={"fit"} borderRadius={8}>
+        <HStack p={2} bg={"body"} w={"fit"} borderRadius={8}>
           {PERIODS.map((item) => {
             const active = period === item;
             return (
@@ -101,7 +101,7 @@ const RevenueChart = () => {
           })}
         </HStack>
 
-        <HStack p={2} bg={"white"} w={"fit"} borderRadius={8}>
+        <HStack p={2} bg={"body"} w={"fit"} borderRadius={8}>
           <DateRangePickerInput
             w={"fit"}
             onConfirm={(input) => {
@@ -114,7 +114,7 @@ const RevenueChart = () => {
         </HStack>
       </HStack>
 
-      <CContainer h={"400px"} p={4} pl={0} borderRadius={16} bg={"white"}>
+      <CContainer h={"400px"} p={4} pl={0} borderRadius={16} bg={"body"}>
         <CContainer px={4} pb={6}>
           <Heading5 fontWeight={"bold"}>Revenue Analysis</Heading5>
         </CContainer>
@@ -194,7 +194,7 @@ const TotalTxsChart = () => {
   return (
     <CContainer gap={4}>
       <HStack justify={"space-between"} wrap={"wrap"}>
-        <HStack p={2} bg={"white"} w={"fit"} borderRadius={8}>
+        <HStack p={2} bg={"body"} w={"fit"} borderRadius={8}>
           {PERIODS.map((item) => {
             const active = period === item;
             return (
@@ -212,7 +212,7 @@ const TotalTxsChart = () => {
           })}
         </HStack>
 
-        <HStack p={2} bg={"white"} w={"fit"} borderRadius={8}>
+        <HStack p={2} bg={"body"} w={"fit"} borderRadius={8}>
           <DateRangePickerInput
             w={"fit"}
             onConfirm={(input) => {
@@ -225,7 +225,7 @@ const TotalTxsChart = () => {
         </HStack>
       </HStack>
 
-      <CContainer h={"400px"} p={4} pl={0} borderRadius={16} bg={"white"}>
+      <CContainer h={"400px"} p={4} pl={0} borderRadius={16} bg={"body"}>
         <CContainer px={4} pb={6}>
           <Heading5 fontWeight={"bold"}>Transaction Analysis</Heading5>
         </CContainer>

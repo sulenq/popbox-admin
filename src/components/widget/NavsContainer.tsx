@@ -10,11 +10,12 @@ import {
   HStack,
   Icon,
   Stack,
+  Text,
   VStack,
 } from "@chakra-ui/react";
-import { IconSettings } from "@tabler/icons-react";
+import { IconChevronDown, IconSettings } from "@tabler/icons-react";
 import { useRef } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import BackButton from "../ui-custom/BackButton";
 import BnwLogo from "../ui-custom/BnwLogo";
 import CContainer from "../ui-custom/CContainer";
@@ -23,7 +24,9 @@ import Heading6 from "../ui-custom/Heading6";
 import HelperText from "../ui-custom/HelperText";
 import Logo from "../ui-custom/Logo";
 import NavLink from "../ui-custom/NavLink";
+import { Avatar } from "../ui/avatar";
 import { ColorModeButton } from "../ui/color-mode";
+import { MenuContent, MenuItem, MenuRoot, MenuTrigger } from "../ui/menu";
 import { Tooltip } from "../ui/tooltip";
 import CurrentUserTimeZone from "./CurrentUserTimeZone";
 
@@ -195,6 +198,7 @@ const NavContainer = (props: any) => {
 
   // Hooks
   const iss = useIsSmScreenWidth();
+  const navigate = useNavigate();
 
   // Contexts
   const { themeConfig } = useThemeConfig();
@@ -252,7 +256,7 @@ const NavContainer = (props: any) => {
         overflowY={"scroll"}
         className="scrollY"
         overflowX={"clip"}
-        bg={"#f8f8f8"}
+        bg={"bgContent"}
       >
         <HStack
           justify={"space-between"}
@@ -277,6 +281,35 @@ const NavContainer = (props: any) => {
             <ColorModeButton fontSize={"1.1rem"} disabled={ADM === "true"} />
 
             <CurrentUserTimeZone />
+
+            <MenuRoot positioning={{ placement: "bottom-end" }}>
+              <MenuTrigger asChild>
+                <HStack ml={2} cursor={"pointer"}>
+                  <Avatar src="" size={"xs"} />
+
+                  <Text fontWeight={"semibold"}>Admin PopBox</Text>
+
+                  <Icon>
+                    <IconChevronDown size={16} />
+                  </Icon>
+                </HStack>
+              </MenuTrigger>
+
+              <MenuContent>
+                <MenuItem
+                  value="logout"
+                  color={"red.400"}
+                  fontWeight={"bold"}
+                  onClick={() => {
+                    localStorage.removeItem("__auth_token");
+                    localStorage.removeItem("__user_data");
+                    navigate("/");
+                  }}
+                >
+                  Logout
+                </MenuItem>
+              </MenuContent>
+            </MenuRoot>
 
             {/* <MerchantInbox /> */}
           </HStack>
