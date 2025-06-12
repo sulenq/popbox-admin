@@ -1,17 +1,23 @@
+import BButton from "@/components/ui-custom/BButton";
 import CContainer from "@/components/ui-custom/CContainer";
+import NavLink from "@/components/ui-custom/NavLink";
+import { Avatar } from "@/components/ui/avatar";
 import { ColorModeButton } from "@/components/ui/color-mode";
 import LoginForm from "@/components/widget/LoginForm";
 import { IMAGES_PATH } from "@/constants/paths";
-import { Image, SimpleGrid } from "@chakra-ui/react";
+import useAuthMiddleware from "@/context/useAuthMiddleware";
+import { Image, SimpleGrid, Text, VStack } from "@chakra-ui/react";
 
 const RootPage = () => {
+  const authToken = useAuthMiddleware((s) => s.authToken);
+
   return (
     <CContainer
       p={8}
       justify={"center"}
+      align={"center"}
       minH={"100dvh"}
       bg={"bg.subtle"}
-      align={"center"}
     >
       <SimpleGrid
         columns={[1, null, 2]}
@@ -19,7 +25,6 @@ const RootPage = () => {
         borderRadius={16}
         p={4}
         bg={"body"}
-        pos={"relative"}
         border={"1px solid {colors.border.subtle}"}
         maxW={"800px"}
       >
@@ -30,7 +35,24 @@ const RootPage = () => {
         </CContainer>
 
         <CContainer justify={"center"}>
-          <LoginForm />
+          {!authToken && <LoginForm />}
+
+          {authToken && (
+            <VStack gap={4}>
+              <Avatar size={"2xl"} />
+
+              <VStack gap={0}>
+                <Text fontWeight={"semibold"}>Admin PopBox</Text>
+                <Text>popboxadmin</Text>
+              </VStack>
+
+              <NavLink to="/dashboard" w={"fit"}>
+                <BButton colorPalette={"p"} w={"fit"}>
+                  Go to Dashboard
+                </BButton>
+              </NavLink>
+            </VStack>
+          )}
         </CContainer>
       </SimpleGrid>
     </CContainer>
