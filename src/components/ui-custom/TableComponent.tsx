@@ -475,7 +475,7 @@ const PageControl = ({
             onClick={() => {
               setPageControl(pageControl + 1);
             }}
-            disabled={pageControl === pagination.meta.last_page}
+            // disabled={pageControl === pagination.meta.last_page}
             borderRadius={themeConfig.radii.component}
             size={"xs"}
           >
