@@ -531,7 +531,7 @@ const DataTable = (props: any) => {
     {
       th: "Price",
       sortable: true,
-      cProps: {
+      wrapperProps: {
         justify: "end",
       },
     },
@@ -572,7 +572,8 @@ const DataTable = (props: any) => {
       {
         value: item.productPrice,
         td: `Rp ${formatNumber(item.productPrice)}`,
-        cProps: {
+        dataType: "number",
+        wrapperProps: {
           justify: "end",
         },
       },
