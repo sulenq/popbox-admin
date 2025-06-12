@@ -498,7 +498,7 @@ const EditProduct = () => {
 
 const DataTable = (props: any) => {
   // Props
-  const { data, limit, offset, setLimit, setOffset } = props;
+  const { data, limit, offset, setLimit, setOffset, totalData } = props;
 
   // Hooks
   const { req, loading } = useRequest({ id: "delete-product" });
@@ -634,6 +634,8 @@ const DataTable = (props: any) => {
     });
   }
 
+  console.log(totalData);
+
   return (
     <TableComponent
       originalData={data}
@@ -646,7 +648,7 @@ const DataTable = (props: any) => {
       setPageControl={setOffset}
       pagination={{
         meta: {
-          last_page: data?.totalData / limit,
+          last_page: totalData / limit,
         },
       }}
     />
@@ -667,6 +669,7 @@ const ProductPage = () => {
   const [data, setData] = useState<any>(null);
   const [limit, setLimit] = useState<any>(10);
   const [offset, setOffset] = useState<any>(0);
+  const [totalData, setTotalData] = useState(0);
 
   // Utils
   function fetch() {
@@ -685,6 +688,7 @@ const ProductPage = () => {
       onResolve: {
         onSuccess: (r) => {
           setData(r.data.result.productList);
+          setTotalData(r.data.result.totalData);
         },
       },
     });
@@ -716,6 +720,7 @@ const ProductPage = () => {
                 offset={offset}
                 setLimit={setLimit}
                 setOffset={setOffset}
+                totalData={totalData}
               />
 
               <EditProduct />

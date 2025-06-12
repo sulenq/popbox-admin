@@ -1,21 +1,45 @@
 import CContainer from "@/components/ui-custom/CContainer";
 import ComponentSpinner from "@/components/ui-custom/ComponentSpinner";
 import DateRangePickerInput from "@/components/ui-custom/DateRangePickerInput";
+import FeedbackNoData from "@/components/ui-custom/FeedbackNoData";
 import FeedbackRetry from "@/components/ui-custom/FeedbackRetry";
 import Heading6 from "@/components/ui-custom/Heading6";
+import SelectInput from "@/components/ui-custom/SelectInput";
 import TableComponent from "@/components/ui-custom/TableComponent";
+import { Interface__Select } from "@/constants/interfaces";
 import { Type__DateRange } from "@/constants/types";
+import useDataState from "@/hooks/useDataState";
 import useRenderTrigger from "@/hooks/useRenderTrigger";
 import useRequest from "@/hooks/useRequest";
 import formatDate from "@/utils/formatDate";
 import formatNumber from "@/utils/formatNumber";
 import getThisMonthDateRange from "@/utils/getThisMonthDateRange";
-import { Badge, HStack } from "@chakra-ui/react";
+import { Badge, Center, HStack } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
+
+const SelectProduct = (props: Interface__Select) => {
+  const { ...restProps } = props;
+
+  // States
+  const { data } = useDataState({
+    url: `/products/get-public`,
+  });
+
+  const options = data?.productList?.map((item: any) => ({
+    value: item.productCode,
+    label: item.productName,
+  }));
+
+  function fetch(setOptions: any) {
+    setOptions(options);
+  }
+
+  return <SelectInput fetch={fetch} title="Product" {...restProps} />;
+};
 
 const DataTable = (props: any) => {
   // Props
-  const { data, limit, offset, setLimit, setOffset } = props;
+  const { data, limit, offset, setLimit, setOffset, totalData } = props;
 
   // States
   const ths = [
@@ -135,7 +159,7 @@ const DataTable = (props: any) => {
       setPageControl={setOffset}
       pagination={{
         meta: {
-          last_page: data?.totalData / limit,
+          last_page: totalData / limit,
         },
       }}
     />
@@ -156,8 +180,10 @@ const TransactionPage = () => {
   const [dateRange, setDateRange] = useState<Type__DateRange>(
     getThisMonthDateRange()
   );
+  const [product, setProduct] = useState<any>(null);
   const [limit, setLimit] = useState<any>(10);
   const [offset, setOffset] = useState<any>(0);
+  const [totalData, setTotalData] = useState(0);
 
   // Utils
   function fetch() {
@@ -166,6 +192,7 @@ const TransactionPage = () => {
       offset: 0,
       dateFrom: dateRange.from,
       dateTo: dateRange.to,
+      productCode: product?.value || "",
     };
     const config = {
       url: "/transactions/get-list",
@@ -178,6 +205,7 @@ const TransactionPage = () => {
       onResolve: {
         onSuccess: (r) => {
           setData(r.data.result.trxList);
+          setTotalData(r.data.result.totalData);
         },
       },
     });
@@ -195,7 +223,7 @@ const TransactionPage = () => {
         <>
           {error && <FeedbackRetry onRetry={fetch} />}
 
-          {!error && data && (
+          {!error && (
             <CContainer borderRadius={16} bg={"body"} pb={4}>
               <HStack
                 p={4}
@@ -213,16 +241,30 @@ const TransactionPage = () => {
                     inputValue={dateRange}
                     nonNullable
                   />
+
+                  <SelectProduct
+                    onConfirm={(input) => setProduct(input)}
+                    value={product}
+                  />
                 </HStack>
               </HStack>
 
-              <DataTable
-                data={data}
-                limit={limit}
-                offset={offset}
-                setLimit={setLimit}
-                setOffset={setOffset}
-              />
+              {data && (
+                <DataTable
+                  data={data}
+                  limit={limit}
+                  offset={offset}
+                  setLimit={setLimit}
+                  setOffset={setOffset}
+                  totalData={totalData}
+                />
+              )}
+
+              {!data && (
+                <Center flex={1} p={10}>
+                  <FeedbackNoData />
+                </Center>
+              )}
             </CContainer>
           )}
         </>
