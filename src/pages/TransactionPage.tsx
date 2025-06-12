@@ -135,7 +135,7 @@ const DataTable = (props: any) => {
       setPageControl={setOffset}
       pagination={{
         meta: {
-          last_page: Math.ceil(data.length / limit),
+          last_page: data?.totalData / limit,
         },
       }}
     />
