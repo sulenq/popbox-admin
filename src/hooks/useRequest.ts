@@ -136,7 +136,7 @@ const useRequest = ({
             navigate(loginPath);
             break;
           case 500:
-            navigate("/server-error");
+            // navigate("/server-error");
             break;
           case 503:
             navigate("/maintenance");

@@ -3,12 +3,13 @@ import ComponentSpinner from "@/components/ui-custom/ComponentSpinner";
 import DateRangePickerInput from "@/components/ui-custom/DateRangePickerInput";
 import FeedbackRetry from "@/components/ui-custom/FeedbackRetry";
 import Heading6 from "@/components/ui-custom/Heading6";
-import SearchInput from "@/components/ui-custom/SearchInput";
 import TableComponent from "@/components/ui-custom/TableComponent";
+import { Type__DateRange } from "@/constants/types";
 import useRenderTrigger from "@/hooks/useRenderTrigger";
 import useRequest from "@/hooks/useRequest";
 import formatDate from "@/utils/formatDate";
 import formatNumber from "@/utils/formatNumber";
+import getThisMonthDateRange from "@/utils/getThisMonthDateRange";
 import { Badge, HStack } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 
@@ -18,6 +19,10 @@ const DataTable = (props: any) => {
 
   // States
   const ths = [
+    {
+      th: "Invoice Number",
+      sortable: true,
+    },
     {
       th: "Product Name",
       sortable: true,
@@ -64,6 +69,10 @@ const DataTable = (props: any) => {
     item: item,
     columnsFormat: [
       {
+        value: item.invoiceNumber,
+        td: item.invoiceNumber,
+      },
+      {
         value: item.productName,
         td: item.productName,
       },
@@ -73,7 +82,7 @@ const DataTable = (props: any) => {
       },
       {
         value: item.productPrice,
-        td: `Rp ${formatNumber(item.productPrice)}`,
+        td: `Rp ${formatNumber(item.price)}`,
         dataType: "number",
         wrapperProps: {
           justify: "end",
@@ -83,11 +92,17 @@ const DataTable = (props: any) => {
         value: item.qty,
         td: formatNumber(item.qty),
         dataType: "number",
+        wrapperProps: {
+          justify: "center",
+        },
       },
       {
         value: item.grandTotal,
-        td: formatNumber(item.grandTotal),
+        td: `Rp ${formatNumber(item.grandTotal)}`,
         dataType: "number",
+        wrapperProps: {
+          justify: "end",
+        },
       },
       {
         value: item.transactionDate,
@@ -97,7 +112,7 @@ const DataTable = (props: any) => {
       {
         value: item.status,
         td: (
-          <Badge colorPalette={item.status ? "green" : "red"}>
+          <Badge colorPalette={item.status === "SUCCESS" ? "green" : "red"}>
             {item.status}
           </Badge>
         ),
@@ -105,11 +120,6 @@ const DataTable = (props: any) => {
         wrapperProps: {
           justify: "center",
         },
-      },
-      {
-        value: item.createdAt,
-        td: formatDate(item.createdAt),
-        dataType: "date",
       },
     ],
   }));
@@ -143,6 +153,9 @@ const TransactionPage = () => {
 
   // States
   const [data, setData] = useState<any>(null);
+  const [dateRange, setDateRange] = useState<Type__DateRange>(
+    getThisMonthDateRange()
+  );
   const [limit, setLimit] = useState<any>(10);
   const [offset, setOffset] = useState<any>(0);
 
@@ -151,6 +164,8 @@ const TransactionPage = () => {
     const payload = {
       limit: 10,
       offset: 0,
+      dateFrom: dateRange.from,
+      dateTo: dateRange.to,
     };
     const config = {
       url: "/transactions/get-list",
@@ -162,7 +177,7 @@ const TransactionPage = () => {
       config,
       onResolve: {
         onSuccess: (r) => {
-          setData(r.data.result.productList);
+          setData(r.data.result.trxList);
         },
       },
     });
@@ -190,9 +205,14 @@ const TransactionPage = () => {
                 <Heading6 fontWeight={"bold"}>Report Transaction</Heading6>
 
                 <HStack>
-                  <DateRangePickerInput w={"fit"} />
-
-                  <SearchInput />
+                  <DateRangePickerInput
+                    w={"fit"}
+                    onConfirm={(input) => {
+                      setDateRange(input);
+                    }}
+                    inputValue={dateRange}
+                    nonNullable
+                  />
                 </HStack>
               </HStack>
 

@@ -24,6 +24,7 @@ import useRequest from "@/hooks/useRequest";
 import back from "@/utils/back";
 import capsFirstLetter from "@/utils/capsFirstLetter";
 import formatDuration from "@/utils/formatDuration";
+import getThisMonthDateRange from "@/utils/getThisMonthDateRange";
 import {
   FieldsetRoot,
   HStack,
@@ -51,15 +52,6 @@ type ChartSummary = {
 };
 type Period = "daily" | "monthly" | "annual";
 
-const getThisMonthRange = (): Type__DateRange => {
-  const now = new Date();
-  const start = new Date(now.getFullYear(), now.getMonth(), 1);
-  const end = new Date(now.getFullYear(), now.getMonth() + 1, 0);
-  return {
-    from: start.toISOString().split("T")[0],
-    to: end.toISOString().split("T")[0],
-  };
-};
 const PERIODS: Period[] = ["daily", "monthly", "annual"];
 
 const UpdateRule = (props: any) => {
@@ -258,7 +250,7 @@ const Rules = () => {
 const RevenueChart = () => {
   // States
   const [dateRange, setDateRange] = useState<Type__DateRange>(
-    getThisMonthRange()
+    getThisMonthDateRange()
   );
   const [period, setPeriod] = useState<Period>("daily");
   const { data, loading, error, makeRequest } = useDataState<ChartSummary>({
@@ -369,7 +361,7 @@ const RevenueChart = () => {
 const TotalTxsChart = () => {
   // States
   const [dateRange, setDateRange] = useState<Type__DateRange>(
-    getThisMonthRange()
+    getThisMonthDateRange()
   );
   const [period, setPeriod] = useState<Period>("daily");
   const { data, loading, error, makeRequest } = useDataState<ChartSummary>({
