@@ -24,7 +24,6 @@ import useRenderTrigger from "@/hooks/useRenderTrigger";
 import useRequest from "@/hooks/useRequest";
 import useScreen from "@/hooks/useScreen";
 import back from "@/utils/back";
-import fileToBase64 from "@/utils/fileToBase64";
 import {
   Circle,
   FieldsetRoot,
@@ -135,24 +134,30 @@ const AddTemplate = () => {
       display: yup.array().required(l.required_form),
       production: yup.array().required(l.required_form),
     }),
-    onSubmit: async (values) => {
+    onSubmit: (values) => {
       console.log(values);
       const display = values.display?.[0];
       const production = values.production?.[0];
 
-      const payload = {
-        layoutId: values.layoutId,
-        productCategoryId: values.productCategory?.[0]?.value,
-        display: display ? await fileToBase64(display) : null,
-        production: production ? await fileToBase64(production) : null,
-      };
+      const formData = new FormData();
+      formData.append("layoutId", values.layoutId);
+      formData.append("productId", values.productCategory?.[0]?.value || "");
 
-      console.log(payload);
+      if (display) {
+        formData.append("display", display);
+      }
+
+      if (production) {
+        formData.append("production", production);
+      }
 
       const config = {
         url: "/templates/add-template",
         method: "post",
-        data: payload,
+        data: formData,
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
       };
 
       req({

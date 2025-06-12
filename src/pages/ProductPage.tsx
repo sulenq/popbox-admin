@@ -49,7 +49,7 @@ const DefaultTemplateInput = (props: any) => {
   const { sw } = useScreen();
 
   // States
-  const { data, loading, error, makeRequest } = useDataState<any>({
+  const { data, loading, error, makeRequest } = useDataState({
     url: `/templates/get`,
   });
 
@@ -111,7 +111,9 @@ const AddProduct = () => {
   // Hooks
   const { open, onOpen, onClose } = useDisclosure();
   useBackOnClose("add-product", open, onOpen, onClose);
-  const { req, loading } = useRequest({ id: "add-product" });
+  const { req, loading } = useRequest({
+    id: "add-product",
+  });
 
   // Contexts
   const { l } = useLang();
@@ -134,22 +136,27 @@ const AddProduct = () => {
       productPrice: yup.number().required(l.required_form),
       defaultTemplate: yup.object().required(l.required_form),
     }),
-    onSubmit: async (values) => {
+    onSubmit: (values) => {
       console.log(values);
       const productPhoto = values.productPhoto?.[0];
 
-      const payload = {
-        productCode: values.productCode,
-        productName: values.productName,
-        productPhoto: productPhoto ? await fileToBase64(productPhoto) : null,
-        productPrice: values.productPrice,
-        defaultTemplateId: values.defaultTemplate?.id,
-      };
+      const formData = new FormData();
+      formData.append("productCode", values.productCode);
+      formData.append("productName", values.productName);
+      formData.append("productPrice", values.productPrice.toString());
+      formData.append("defaultTemplateId", values.defaultTemplate?.id || "");
+
+      if (productPhoto) {
+        formData.append("productPhoto", productPhoto);
+      }
 
       const config = {
         url: "/products/add",
         method: "post",
-        data: payload,
+        data: formData,
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
       };
 
       req({
@@ -503,6 +510,7 @@ const DataTable = (props: any) => {
   const setEditProductData = useEditProductDisclosure(
     (s) => s.setEditProductData
   );
+  const { rt, setRt } = useRenderTrigger();
 
   // States
   const ths = [
@@ -587,7 +595,7 @@ const DataTable = (props: any) => {
       label: "Delete",
       confirmation: (rowData: any) => {
         return {
-          id: "delete-product",
+          id: `delete-product-${rowData.id}`,
           title: "Delete Product",
           description: "Are you sure you want to delete this product ?",
           confirmLabel: "Delete",
@@ -610,12 +618,19 @@ const DataTable = (props: any) => {
     };
 
     const config = {
-      url: "/product/delete",
+      url: "/products/delete",
       method: "post",
       data: payload,
     };
 
-    req({ config });
+    req({
+      config,
+      onResolve: {
+        onSuccess: () => {
+          setRt(!rt);
+        },
+      },
+    });
   }
 
   return (
@@ -643,6 +658,7 @@ const ProductPage = () => {
     id: "get-product",
     showSuccessToast: false,
     showLoadingToast: false,
+    showErrorToast: false,
   });
   const { rt } = useRenderTrigger();
 

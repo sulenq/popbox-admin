@@ -159,6 +159,11 @@ const useRequest = ({
             );
           } else if (e.code === "ERR_NETWORK") {
             return l.error_network_toast;
+          } else if (statusCode === 400) {
+            return {
+              title: "Gagal menambahkan produk",
+              description: "Data produk tidak valid atau sudah terdaftar",
+            };
           } else if (statusCode === 401) {
             return {
               title: l.error_401_toast.title,

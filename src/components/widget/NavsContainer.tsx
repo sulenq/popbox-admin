@@ -238,7 +238,7 @@ const NavContainer = (props: any) => {
             )}
           </Link>
 
-          <VStack justify={"center"} flex={1}>
+          <VStack mt={6} flex={1}>
             <NavList activePath={activePath} />
           </VStack>
 

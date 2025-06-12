@@ -39,6 +39,8 @@ const useDataState = <T = any>({
   const { req, response, loading, error, status } = useRequest({
     id: url || "data-state",
     showLoadingToast: false,
+    showErrorToast: false,
+    showSuccessToast: false,
   });
 
   // Requset function
