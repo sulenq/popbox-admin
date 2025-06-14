@@ -39,7 +39,7 @@ const SelectProduct = (props: Interface__Select) => {
 
 const DataTable = (props: any) => {
   // Props
-  const { data, limit, offset, setLimit, setOffset, totalData } = props;
+  const { data, limit, page, setLimit, setPage, totalData } = props;
 
   // States
   const ths = [
@@ -155,8 +155,8 @@ const DataTable = (props: any) => {
       tds={tds}
       limitControl={limit}
       setLimitControl={setLimit}
-      pageControl={offset + 1}
-      setPageControl={setOffset}
+      pageControl={page}
+      setPageControl={setPage}
       pagination={{
         meta: {
           last_page: totalData / limit,
@@ -184,14 +184,16 @@ const TransactionPage = () => {
   );
   const [product, setProduct] = useState<any>(null);
   const [limit, setLimit] = useState<any>(10);
-  const [offset, setOffset] = useState<any>(0);
+  const [page, setPage] = useState<any>(1);
   const [totalData, setTotalData] = useState(0);
+
+  console.log("page", page);
 
   // Utils
   function fetch() {
     const payload = {
       limit: limit,
-      offset: offset,
+      page: page,
       dateFrom: dateRange.from,
       dateTo: dateRange.to,
       productCode: product?.value || "",
@@ -215,7 +217,7 @@ const TransactionPage = () => {
 
   useEffect(() => {
     fetch();
-  }, [rt, limit, offset]);
+  }, [rt, limit, page]);
 
   return (
     <CContainer p={4} pt={0} align={"center"} flex={1} overflowY={"auto"}>
@@ -258,9 +260,9 @@ const TransactionPage = () => {
                 <DataTable
                   data={data}
                   limit={limit}
-                  offset={offset}
+                  page={page}
                   setLimit={setLimit}
-                  setOffset={setOffset}
+                  setPage={setPage}
                   pagination={totalData}
                 />
               )}

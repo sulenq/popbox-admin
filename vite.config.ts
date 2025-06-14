@@ -19,7 +19,7 @@ export default defineConfig({
       },
 
       manifest: {
-        name: "vite-chakra-pwa-template",
+        name: "vite-chakra-pwa-tenpm mplate",
         short_name: "vite-chakra-pwa-template",
         description: "PWA template with vite n chakra",
         theme_color: "#000000",
