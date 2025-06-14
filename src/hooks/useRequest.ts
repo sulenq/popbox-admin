@@ -4,6 +4,7 @@ import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toaster } from "../components/ui/toaster";
 import request from "../utils/request";
+import useAuthMiddleware from "@/context/useAuthMiddleware";
 
 interface Interface__Req {
   config: AxiosRequestConfig;
@@ -50,6 +51,7 @@ const useRequest = ({
 
   // Contexts
   const { l } = useLang();
+  const setAuthToken = useAuthMiddleware((s) => s.setAuthToken);
 
   // States
   const [loading, setLoading] = useState<boolean>(false);
@@ -133,6 +135,8 @@ const useRequest = ({
           case 401:
           case 403:
             // call logout func
+            localStorage.removeItem("__auth_token");
+            setAuthToken(undefined);
             navigate(loginPath);
             break;
           case 500:

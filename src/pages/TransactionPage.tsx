@@ -34,7 +34,7 @@ const SelectProduct = (props: Interface__Select) => {
     setOptions(options);
   }
 
-  return <SelectInput fetch={fetch} title="Product" {...restProps} />;
+  return <SelectInput fetch={fetch} title="Product" w={"fit"} {...restProps} />;
 };
 
 const DataTable = (props: any) => {
@@ -162,6 +162,8 @@ const DataTable = (props: any) => {
           last_page: totalData / limit,
         },
       }}
+      overflowY={"auto"}
+      maxH={"calc(100dvh - 216px)"}
     />
   );
 };
@@ -188,8 +190,8 @@ const TransactionPage = () => {
   // Utils
   function fetch() {
     const payload = {
-      limit: 10,
-      offset: 0,
+      limit: limit,
+      offset: offset,
       dateFrom: dateRange.from,
       dateTo: dateRange.to,
       productCode: product?.value || "",
@@ -216,7 +218,7 @@ const TransactionPage = () => {
   }, [rt, limit, offset]);
 
   return (
-    <CContainer p={4} pt={0} align={"center"} flex={1}>
+    <CContainer p={4} pt={0} align={"center"} flex={1} overflowY={"auto"}>
       {loading && <ComponentSpinner />}
 
       {!loading && (
@@ -224,11 +226,13 @@ const TransactionPage = () => {
           {error && <FeedbackRetry onRetry={fetch} />}
 
           {!error && (
-            <CContainer borderRadius={16} bg={"body"} pb={4}>
+            <CContainer borderRadius={16} bg={"body"} pb={4} overflowY={"auto"}>
               <HStack
                 p={4}
                 borderBottom={"1px solid {colors.border.subtle}"}
                 justify={"space-between"}
+                overflowX={"auto"}
+                flexShrink={0}
               >
                 <Heading6 fontWeight={"bold"}>Report Transaction</Heading6>
 
@@ -245,6 +249,7 @@ const TransactionPage = () => {
                   <SelectProduct
                     onConfirm={(input) => setProduct(input)}
                     value={product}
+                    minW={"120px"}
                   />
                 </HStack>
               </HStack>
@@ -256,7 +261,7 @@ const TransactionPage = () => {
                   offset={offset}
                   setLimit={setLimit}
                   setOffset={setOffset}
-                  totalData={totalData}
+                  pagination={totalData}
                 />
               )}
 

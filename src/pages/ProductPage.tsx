@@ -667,9 +667,9 @@ const ProductPage = () => {
 
   // States
   const [data, setData] = useState<any>(null);
-  const [limit, setLimit] = useState<any>(10);
-  const [offset, setOffset] = useState<any>(0);
-  const [totalData, setTotalData] = useState(0);
+  const [limit] = useState<any>(10);
+  // const [offset, setOffset] = useState<any>(0);
+  // const [totalData, setTotalData] = useState(0);
 
   // Utils
   function fetch() {
@@ -688,7 +688,7 @@ const ProductPage = () => {
       onResolve: {
         onSuccess: (r) => {
           setData(r.data.result.productList);
-          setTotalData(r.data.result.totalData);
+          // setTotalData(r.data.result.totalData);
         },
       },
     });
@@ -696,7 +696,7 @@ const ProductPage = () => {
 
   useEffect(() => {
     fetch();
-  }, [rt, limit, offset]);
+  }, [rt]);
 
   return (
     <CContainer p={4} pt={0} align={"center"} flex={1}>
@@ -717,10 +717,10 @@ const ProductPage = () => {
               <DataTable
                 data={data}
                 limit={limit}
-                offset={offset}
-                setLimit={setLimit}
-                setOffset={setOffset}
-                totalData={totalData}
+                // offset={offset}
+                // setLimit={setLimit}
+                // setOffset={setOffset}
+                // totalData={totalData}
               />
 
               <EditProduct />

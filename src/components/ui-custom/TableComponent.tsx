@@ -473,7 +473,7 @@ const PageControl = ({
             // variant={iss ? "outline" : "ghost"}
             variant={"ghost"}
             onClick={() => {
-              setPageControl(pageControl + 1);
+              setPageControl(pageControl);
             }}
             disabled={pageControl === pagination.meta.last_page}
             borderRadius={themeConfig.radii.component}
