@@ -125,6 +125,8 @@ const SelectInput = ({
       }
     };
 
+    console.log(inputValue);
+
     return (
       <>
         {fl === undefined && <ComponentSpinner mb={2} />}

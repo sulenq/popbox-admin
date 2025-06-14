@@ -187,16 +187,14 @@ const TransactionPage = () => {
   const [page, setPage] = useState<any>(1);
   const [totalData, setTotalData] = useState(0);
 
-  console.log("page", page);
-
   // Utils
   function fetch() {
     const payload = {
       limit: limit,
       page: page,
-      dateFrom: dateRange.from,
-      dateTo: dateRange.to,
-      productCode: product?.value || "",
+      dateFrom: (dateRange.from as string).slice(0, 10),
+      dateTo: (dateRange.to as string).slice(0, 10),
+      productCode: product?.[0]?.value || "",
     };
     const config = {
       url: "/transactions/get-list",
@@ -217,7 +215,7 @@ const TransactionPage = () => {
 
   useEffect(() => {
     fetch();
-  }, [rt, limit, page]);
+  }, [rt, limit, page, product, dateRange]);
 
   return (
     <CContainer p={4} pt={0} align={"center"} flex={1} overflowY={"auto"}>
@@ -250,8 +248,9 @@ const TransactionPage = () => {
 
                   <SelectProduct
                     onConfirm={(input) => setProduct(input)}
-                    value={product}
+                    inputValue={product}
                     minW={"120px"}
+                    placeholder="Filter by produk"
                   />
                 </HStack>
               </HStack>
