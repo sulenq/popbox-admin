@@ -28,13 +28,13 @@ const RootPage = () => {
         border={"1px solid {colors.border.subtle}"}
         maxW={"800px"}
       >
-        <ColorModeButton pos={"absolute"} right={4} top={4} />
-
         <CContainer>
           <Image src={`${IMAGES_PATH}/login.png`} w={"full"} />
         </CContainer>
 
-        <CContainer justify={"center"}>
+        <CContainer justify={"center"} pos={"relative"}>
+          <ColorModeButton pos={"absolute"} right={0} top={0} />
+
           {!authToken && <LoginForm />}
 
           {authToken && (
