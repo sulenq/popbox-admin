@@ -720,7 +720,12 @@ const ProductPage = () => {
           {error && <FeedbackRetry onRetry={fetch} />}
 
           {!error && (
-            <CContainer borderRadius={16} bg={"body"} pb={4}>
+            <CContainer
+              borderRadius={16}
+              bg={"body"}
+              pb={4}
+              flex={data ? 0 : 1}
+            >
               <HStack p={4} borderBottom={"1px solid {colors.border.subtle}"}>
                 <Heading6 fontWeight={"bold"}>Setting Product</Heading6>
 
