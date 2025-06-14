@@ -297,6 +297,9 @@ const TemplateItem = (props: any) => {
   // Hooks
   const { req, loading } = useRequest({ id: "delete-template" });
 
+  // Contexts
+  const { rt, setRt } = useRenderTrigger();
+
   // Utils
   function deleteTemplate(id: any) {
     const payload = {
@@ -309,7 +312,14 @@ const TemplateItem = (props: any) => {
       data: payload,
     };
 
-    req({ config });
+    req({
+      config,
+      onResolve: {
+        onSuccess: () => {
+          setRt(!rt);
+        },
+      },
+    });
   }
 
   return (
