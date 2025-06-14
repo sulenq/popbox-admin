@@ -13,6 +13,7 @@ import { useThemeConfig } from "./context/useThemeConfig";
 import useADM from "./context/useADM";
 import { useColorMode } from "./components/ui/color-mode";
 import useScrollEffect from "./hooks/useScrollEffect";
+import GlobalDisclosure from "./components/widget/GlobalDisclosure";
 
 const EndpointWrapper = ({ children }: { children: React.ReactNode }) => {
   // Contexts
@@ -125,6 +126,7 @@ function App() {
       <Toaster />
       <BrowserRouter>
         <OfflineDisclosure />
+        <GlobalDisclosure />
 
         <EndpointWrapper>
           <Routing />

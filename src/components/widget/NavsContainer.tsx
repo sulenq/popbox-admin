@@ -1,5 +1,6 @@
 import { NAVS } from "@/constants/navs";
 import useADM from "@/context/useADM";
+import useChangePasswordDisclosure from "@/context/useChangePasswordDisclosure";
 import useLang from "@/context/useLang";
 import { useThemeConfig } from "@/context/useThemeConfig";
 import useIsSmScreenWidth from "@/hooks/useIsSmScreenWidth";
@@ -29,6 +30,7 @@ import { ColorModeButton } from "../ui/color-mode";
 import { MenuContent, MenuItem, MenuRoot, MenuTrigger } from "../ui/menu";
 import { Tooltip } from "../ui/tooltip";
 import CurrentUserTimeZone from "./CurrentUserTimeZone";
+import useAuthMiddleware from "@/context/useAuthMiddleware";
 
 const ActiveNavIndicator = ({ ...props }: CircleProps) => {
   // Contexts
@@ -203,6 +205,8 @@ const NavContainer = (props: any) => {
   // Contexts
   const { themeConfig } = useThemeConfig();
   const { ADM } = useADM();
+  const onOpenChangePassword = useChangePasswordDisclosure((s) => s.onOpen);
+  const setAuthToken = useAuthMiddleware((s) => s.setAuthToken);
 
   // States, Refs
   const containerRef = useRef<HTMLDivElement>(null);
@@ -297,12 +301,20 @@ const NavContainer = (props: any) => {
 
               <MenuContent>
                 <MenuItem
+                  value="change password"
+                  onClick={onOpenChangePassword}
+                >
+                  Change Password
+                </MenuItem>
+
+                <MenuItem
                   value="logout"
                   color={"red.400"}
                   fontWeight={"bold"}
                   onClick={() => {
                     localStorage.removeItem("__auth_token");
                     localStorage.removeItem("__user_data");
+                    setAuthToken(undefined);
                     navigate("/");
                   }}
                 >
