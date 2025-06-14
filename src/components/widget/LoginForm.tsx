@@ -2,7 +2,7 @@ import useAuthMiddleware from "@/context/useAuthMiddleware";
 import useLang from "@/context/useLang";
 import { useThemeConfig } from "@/context/useThemeConfig";
 import useRequest from "@/hooks/useRequest";
-import { FieldsetRoot, HStack, Text } from "@chakra-ui/react";
+import { FieldsetRoot, Text } from "@chakra-ui/react";
 import { useFormik } from "formik";
 import { useNavigate } from "react-router-dom";
 import * as yup from "yup";
@@ -11,7 +11,6 @@ import CContainer from "../ui-custom/CContainer";
 import Heading6 from "../ui-custom/Heading6";
 import PasswordInput from "../ui-custom/PasswordInput";
 import StringInput from "../ui-custom/StringInput";
-import TextRouterLink from "../ui-custom/TextRouterLink";
 import { Field } from "../ui/field";
 
 const LoginForm = () => {
@@ -126,9 +125,9 @@ const LoginForm = () => {
             />
           </Field>
 
-          <HStack mt={4}>
+          {/* <HStack mt={4}>
             <TextRouterLink to="/">{l.forgot_password}</TextRouterLink>
-          </HStack>
+          </HStack> */}
 
           <BButton
             type="submit"
