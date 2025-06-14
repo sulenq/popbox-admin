@@ -9,6 +9,7 @@ import {
   DisclosureRoot,
 } from "@/components/ui-custom/Disclosure";
 import DisclosureHeaderContent from "@/components/ui-custom/DisclosureHeaderContent";
+import FeedbackNoData from "@/components/ui-custom/FeedbackNoData";
 import FeedbackRetry from "@/components/ui-custom/FeedbackRetry";
 import FileInput from "@/components/ui-custom/FileInput";
 import Heading6 from "@/components/ui-custom/Heading6";
@@ -29,6 +30,7 @@ import formatDate from "@/utils/formatDate";
 import formatNumber from "@/utils/formatNumber";
 import urlToBase64 from "@/utils/urlToBase64";
 import {
+  Center,
   Circle,
   FieldsetRoot,
   HStack,
@@ -737,6 +739,12 @@ const ProductPage = () => {
                   // setOffset={setOffset}
                   // totalData={totalData}
                 />
+              )}
+
+              {!data && (
+                <Center flex={1} p={10}>
+                  <FeedbackNoData />
+                </Center>
               )}
 
               <EditProduct />

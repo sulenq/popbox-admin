@@ -10,6 +10,7 @@ import {
   DisclosureRoot,
 } from "@/components/ui-custom/Disclosure";
 import DisclosureHeaderContent from "@/components/ui-custom/DisclosureHeaderContent";
+import FeedbackNoData from "@/components/ui-custom/FeedbackNoData";
 import FeedbackRetry from "@/components/ui-custom/FeedbackRetry";
 import FileInput from "@/components/ui-custom/FileInput";
 import Heading6 from "@/components/ui-custom/Heading6";
@@ -25,6 +26,7 @@ import useRequest from "@/hooks/useRequest";
 import useScreen from "@/hooks/useScreen";
 import back from "@/utils/back";
 import {
+  Center,
   Circle,
   FieldsetRoot,
   HStack,
@@ -407,16 +409,29 @@ const TemplatePage = () => {
         <>
           {error && <FeedbackRetry onRetry={fetch} />}
 
-          {!error && data && (
-            <CContainer borderRadius={16} bg={"body"} pb={4}>
-              <HStack p={4} borderBottom={"1px solid {colors.border.subtle}"}>
-                <Heading6 fontWeight={"bold"}>Setting Template</Heading6>
+          {!error && (
+            <>
+              {data && (
+                <CContainer borderRadius={16} bg={"body"} pb={4}>
+                  <HStack
+                    p={4}
+                    borderBottom={"1px solid {colors.border.subtle}"}
+                  >
+                    <Heading6 fontWeight={"bold"}>Setting Template</Heading6>
 
-                <AddTemplate />
-              </HStack>
+                    <AddTemplate />
+                  </HStack>
 
-              <DataList data={data} />
-            </CContainer>
+                  <DataList data={data} />
+                </CContainer>
+              )}
+
+              {!data && (
+                <Center flex={1} p={10}>
+                  <FeedbackNoData />
+                </Center>
+              )}
+            </>
           )}
         </>
       )}
