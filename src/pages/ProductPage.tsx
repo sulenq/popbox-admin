@@ -25,10 +25,8 @@ import useRenderTrigger from "@/hooks/useRenderTrigger";
 import useRequest from "@/hooks/useRequest";
 import useScreen from "@/hooks/useScreen";
 import back from "@/utils/back";
-import fileToBase64 from "@/utils/fileToBase64";
 import formatDate from "@/utils/formatDate";
 import formatNumber from "@/utils/formatNumber";
-import urlToBase64 from "@/utils/urlToBase64";
 import {
   Center,
   Circle,
@@ -350,24 +348,25 @@ const EditProduct = () => {
       console.log(values);
       const productPhoto = values.productPhoto?.[0];
 
-      const payload = {
-        id: item?.id,
-        productCode: values.productCode,
-        productName: values.productName,
-        productPhoto:
-          productPhoto instanceof File
-            ? await fileToBase64(productPhoto)
-            : await urlToBase64(productPhoto),
-        productPrice: values.productPrice,
-        defaultTemplateId: values.defaultTemplate?.id,
-      };
+      const formData = new FormData();
+      formData.append("id", item?.id);
+      formData.append("productCode", values.productCode);
+      formData.append("productName", values.productName);
+      formData.append("productPrice", values.productPrice.toString());
+      formData.append("defaultTemplateId", values.defaultTemplate?.id || "");
+
+      if (productPhoto) {
+        formData.append("productPhoto", productPhoto);
+      }
 
       const config = {
         url: "/products/update",
         method: "post",
-        data: payload,
+        data: formData,
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
       };
-
       req({
         config,
         onResolve: {
@@ -569,7 +568,7 @@ const DataTable = (props: any) => {
           <CContainer w={"fit"}>
             <Image
               src={item?.productPhoto}
-              h={"50px"}
+              h={"40px"}
               w={"fit"}
               mx={"auto"}
               cursor={"pointer"}
@@ -649,8 +648,6 @@ const DataTable = (props: any) => {
       },
     });
   }
-
-  console.log(totalData);
 
   return (
     <TableComponent
