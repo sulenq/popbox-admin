@@ -411,26 +411,26 @@ const TemplatePage = () => {
 
           {!error && (
             <>
-              {data && (
-                <CContainer borderRadius={16} bg={"body"} pb={4}>
-                  <HStack
-                    p={4}
-                    borderBottom={"1px solid {colors.border.subtle}"}
-                  >
-                    <Heading6 fontWeight={"bold"}>Setting Template</Heading6>
+              <CContainer
+                borderRadius={16}
+                bg={"body"}
+                pb={4}
+                flex={data ? 0 : 1}
+              >
+                <HStack p={4} borderBottom={"1px solid {colors.border.subtle}"}>
+                  <Heading6 fontWeight={"bold"}>Setting Template</Heading6>
 
-                    <AddTemplate />
-                  </HStack>
+                  <AddTemplate />
+                </HStack>
 
-                  <DataList data={data} />
-                </CContainer>
-              )}
+                {data && <DataList data={data} />}
 
-              {!data && (
-                <Center flex={1} p={10}>
-                  <FeedbackNoData />
-                </Center>
-              )}
+                {!data && (
+                  <Center flex={1} p={10}>
+                    <FeedbackNoData />
+                  </Center>
+                )}
+              </CContainer>
             </>
           )}
         </>
