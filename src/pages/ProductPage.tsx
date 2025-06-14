@@ -38,7 +38,7 @@ import {
 } from "@chakra-ui/react";
 import { IconCheck, IconPlus } from "@tabler/icons-react";
 import { useFormik } from "formik";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import * as yup from "yup";
 
 const DefaultTemplateInput = (props: any) => {
@@ -325,7 +325,7 @@ const EditProduct = () => {
   const { rt, setRt } = useRenderTrigger();
 
   // States
-  const item = useMemo(() => editProductData?.item, [editProductData]);
+  const item = editProductData?.item;
   const formik = useFormik({
     validateOnChange: false,
     initialValues: {
@@ -377,6 +377,20 @@ const EditProduct = () => {
       });
     },
   });
+
+  useEffect(() => {
+    if (item) {
+      formik.setValues({
+        productCode: item?.productCode,
+        productName: item?.productName,
+        productPhoto: [item?.productPhoto] as any,
+        productPrice: item?.productPrice,
+        defaultTemplate: {
+          id: item?.defaultTemplateId,
+        },
+      });
+    }
+  }, [item]);
 
   return (
     <DisclosureRoot open={editProductOpen} lazyLoad>
@@ -706,7 +720,7 @@ const ProductPage = () => {
         <>
           {error && <FeedbackRetry onRetry={fetch} />}
 
-          {!error && data && (
+          {!error && (
             <CContainer borderRadius={16} bg={"body"} pb={4}>
               <HStack p={4} borderBottom={"1px solid {colors.border.subtle}"}>
                 <Heading6 fontWeight={"bold"}>Setting Product</Heading6>
@@ -714,14 +728,16 @@ const ProductPage = () => {
                 <AddProduct />
               </HStack>
 
-              <DataTable
-                data={data}
-                limit={limit}
-                // offset={offset}
-                // setLimit={setLimit}
-                // setOffset={setOffset}
-                // totalData={totalData}
-              />
+              {data && (
+                <DataTable
+                  data={data}
+                  limit={limit}
+                  // offset={offset}
+                  // setLimit={setLimit}
+                  // setOffset={setOffset}
+                  // totalData={totalData}
+                />
+              )}
 
               <EditProduct />
             </CContainer>
